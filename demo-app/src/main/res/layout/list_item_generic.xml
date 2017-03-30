@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minHeight="100dp"
+    android:padding="16dp"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/item_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            tools:text="Title Text" />
+
+        <TextView
+            android:id="@+id/item_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            tools:text="This is the item description." />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:paddingStart="16dp"
+        android:paddingLeft="16dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/book_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="5 books"/>
+
+        <TextView
+            android:id="@+id/gpa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="3.7 gpa"/>
+
+    </LinearLayout>
+
+</LinearLayout>

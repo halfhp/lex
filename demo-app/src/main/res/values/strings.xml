@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">lex</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="short_template">This is a {size} template string.</string>
+    <string name="medium_template">A few items: {item_one}, {item_two}, {item_three}, {item_four}</string>
+    <string name="name_template">{FIRST_NAME} {LAST_NAME}</string>
+    <string name="item_count_template">{COUNT} {ITEM}</string>
+    <string name="gpa_template">{NUMBER} GPA</string>
+
+    <string name="and_separator">\u0020and\u0020</string>
+    <string name="comma_separator">,\u0020</string>
+    <string name="comma_and_separator">, and\u0020</string>
+
+    <plurals name="book">
+        <item quantity="one">Book</item>
+        <item quantity="other">Books</item>
+    </plurals>
 </resources>

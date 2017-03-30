@@ -1,10 +1,15 @@
 apply plugin: 'com.android.application'
 
+repositories {
+    // ...
+    maven { url 'https://jitpack.io' }
+}
+
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
-        applicationId "lex.halfhp.com.lex"
+        applicationId "com.halfhp.lex.demo"
         minSdkVersion 9
         targetSdkVersion 25
         versionCode 1
@@ -21,9 +26,18 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    compile 'com.github.blocoio:faker:1.2.5'
+
+    compile 'com.jakewharton:butterknife:8.7.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.7.0'
+
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.squareup.phrase:phrase:1.1.0'
+
+    compile project(":lex")
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.3.1'
     testCompile 'junit:junit:4.12'
 }

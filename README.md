@@ -1,104 +1,165 @@
-# Lex
-A better way to i18n.
+# Lex [![CircleCI](https://circleci.com/gh/halfhp/lex.svg?style=shield)](https://circleci.com/gh/halfhp/lex) [![codecov](https://codecov.io/gh/halfhp/lex/branch/master/graph/badge.svg)](https://codecov.io/gh/halfhp/lex)
+A string templating library for Android.  Lex was inspired by the Square's excellent templating
+library [Phrase](https://github.com/square/phrase).  If you're a Phrase user check out our [Phrase Comparison & Migration](docs/phrase.md) guide.
 
-# Usage
-TODO
+Benefits:
+* Better readability for both developers and translators.
+* Configurable to support translator / project formats.
+* Safer than traditional formatted Strings and similar template libraries.
+* Supports Spannable text.
 
-## Naming Keys
-Because keys must implement the `LexKey` interface, you're limited to using names that are legal
-class names in Java.  The suggested convention is to declare an enum to hold your keys and use
-upper-case names with underscores for spaces:
-
+##### Into a TextView
 ```
-public enum MyLexKey {
+// prints "that donkey is happy"
+Lex.say("that {ANIMAL} is {MOOD}."
+    .with(LexKey.ANIMAL, "donkey")
+    .with(LexKey.MOOD, "happy").to(someTextView);
+```
+
+##### As a CharSequence:
+```
+strings.xml:
+<string name="that_animal">that {ANIMAL}.</string>
+...
+// prints "that donkey."
+CharSequence cs = Lex.say(R.string.that_animal)
+    .with(LexKey.ANIMAL, R.string.donkey).make();
+```
+
+##### As a String:
+``` 
+String str = Lex.say(R.string.that_animal)
+    .with(LexKey.ANIMAL, R.string.donkey).makeString();
+```
+
+##### List Formatting:
+```
+// prints "One, Two, and Three"
+String str = Lex.list("One", "Two", "Three")
+    .separator(", ")
+    .lastItemSeparator(", and ").make();
+```
+
+##### More cool stuff:
+```
+Lex.say(R.string.item_count_template)
+    .withNumber(LexKey.COUNT, item.titles.length, countFormat)      // formatted number
+    .wrappedIn(new AbsoluteSizeSpan(24, true))                      // make {COUNT} 24dp 
+    .wrappedIn(new ForegroundColorSpan(Color.BLUE))                 // make it BLUE too
+    .withPlural(LexKey.ITEM, item.titles.length, R.plurals.book)    // pluralize 'book'
+    .wrappedIn(new ForegroundColorSpan(Color.YELLOW))               // make {ITEM} YELLOW
+    .into(bookCount);                                                 // put results straight into a TextView
+```
+
+# Add Lex
+```
+dependencies {
+    compile 'com.halfhp.lex:lex:1.0.0'
+}
+```
+
+# Initialize Lex
+Add the following to the top of your app's Application.onCreate method:
+```
+Lex.init(this);
+```
+
+**IMPORTANT:** Don't initialize Lex outside of Application.onCreate as it can have unexpected consequences.
+
+# Define some LexKeys
+Create an enum that implements LexKey:
+```
+public enum LexKey implements LexKey {
     QUANTITY,
     DAYS,
     HOURS,
     MINUTES,
-    MESSAGE
+    MESSAGE,
+    ADDRESS_1
+    FIRST_NAME,
+    LAST_NAME
 }
 ```
 
-Also keep in mind that key names are case sensitive and your strings.xml key usage must exactly match
-your defined key names.
+Remeber that key names are case-sensitive in Lex.  For clarity it's strong suggested that you use the 
+upper-case naming convention shown above.  We also suggest you try to keep your key names generic so
+they can be reused, preventing the list from getting too big, which can make it difficult to spot errors
+in template strings.
 
-Works:
-```
-<string name="tries_remaining">Tries remaining: {QUANTITY}</string>
-```
-
-Doesn't Work:
-```
-<string name="tries_remaining">Tries remaining: {quantity}</string>
-<string name="tries_remaining">Tries remaining: {Quantity}</string>
-```
-
-## Escaping Delimiters
-TODO (spoiler: not supported)
-
-# Why Lex > Phrase
-Square's excellent Phrase lib is a staple of the i18n Android developer's toolbelt and the inspiration 
-for Lex.  Phrase is easy enough use and still works, but we like to think Lex is an all-around improvement.
-
-## Safer
-Lex makes it harder to have accidents.  In the example below we demonstrate
-attempting to retrieve a converted value without supplying any key/value pairs to inject.
-
-This compiles (but really shouldnt):
-```
-Phrase.from(context, "some {thing}").format();
-```
-
-This wont:
-```
-Lex.say("Foo").make();
-```
-
-You'll also notice Lex doesn't take a Context parameter.  This is because Lex always uses
-the application context when inflating resources, and as a result is totally to use in your app
-anywhere, any time.  Phrase on the other hand can crash your app when invoked from a background thread
-if you aren't careful.
-
-Finally, Phrase has one particularly easy to misuse method.  What do you think this produces:
+# Create your template strings
+As mentioned above, Lex key names are case sensitive and your strings.xml key usage must exactly match 
+what is declared in your key enum.
 
 ```
-Phrase.from(context, R.string.my_phrase).put("thing", R.string.donkey).format().toString();
+<string name="tries_remaining_template">Tries remaining: {quantity}</string> // WRONG
+<string name="tries_remaining_template">Tries remaining: {Quantity}</string> // WRONG
+<string name="tries_remaining_template">Tries remaining: {QUANTITY}</string> // OK
 ```
 
-If you think it prints "some donkey" then you're wrong.  For an unknown reason, Phrase includes an
-overloaded put that accepts an int value and prints the int value directly.  In fact there is no way
-to directly pass a string resourceId into a put in Phrase.   Worse yet, misusing this method produces 
-no obvious errors, even at runtime.
-
-Lex does exactly the opposite; you can pass in a string resourceId, but not an int.
-
-If you do try to pass in an arbitrary int, the compiler will unfortunately not throw an error but
-Intellij and Android-lint will.  If for some reason you have all of these safety checks disabled,
-you'll still at least get the fail-fast behavior of the app crashing the moment the invalid text is parsed.
-
-
-## Simpler Usage
-Lex was designed to make the syntax as compact as possible without sacrificing readability.  And because
-of the way Lex is initialized, it's methods require fewer parameters.
-
-Phrase:
-```
-String str = Phrase.from(context, "some {thing}").put("thing", "donkey").format().toString();
-```
-
-Lex:
-```
-String str = Lex.say("some {thing}").with("thing", "donkey").makeString();
-```
-
-## More Flexible
-One cool feature that is unique to Lex is the ability to configure keyword delimiters; by default
-`{` and `}` are used, but if for some reason you need to use something else (to match your translator's
-software configuration for example) you can:
+# List Formatting
+Lex can combine arbitrary length lists using conditional separators to produce properly formatted strings.  Lex's
+fluent API for lists takes a sequence of zero or more `CharSequence` elements:
 
 ```
-Lex.init(app, "<<", ">>");
+LexList list = Lex.list("One" "Two", "Three")
 ```
 
-# Upgrading from Phrase
-TODO
+And provides four configuration options that can be combined for desired behavior:
+
+```
+// default separator
+list.separator(",")
+```
+```
+// if set, will always be used when separating a list of exactly two items.
+list.twoItemSeparator(" and ")
+```
+```
+// if set, will always be used when separating the last to items in the list, unless
+// the list is exactly two items long and a twoItemSeparator has also been set.
+list.lastItemSeparator(", and")
+```
+```
+// text to return when formatting an empty list.  default is "".
+list.emptyText("No items.")
+```
+
+For example, if we wanted to format abitrary length lists of items with an Oxford Comma: 
+```
+Lex.list(numbers)
+    .separator(", ")
+    .twoItemSeparator(" and ")
+    .lastItemSeparator(", and ").make()
+```
+If `numbers` is `{"One", "Two", "Three"}` then "One, Two, and Three" is printed.
+If `numbers` is `{"One", "Two"}` then it prints "One and Two".
+
+Or if you don't want the Oxford Comma:
+```
+Lex.list(numbers)
+    .separator(", ")
+    .lastItemSeparator(" and ").make()
+```
+If `numbers` contains `{"One", "Two", "Three"}` then "One, Two and Three" is printed.
+If `numbers` contains `{"One", "Two"}` then it prints "One and Two".
+
+#### A note on list separators
+For clarity, the examples above use hardcoded strings to define separators.  In a
+production app however, these separators should usually be defined in `strings.xml`.
+Be aware that Android strips leading and trailing spaces.
+
+```
+<string name=""> and </string>
+```
+
+Gets stripped and converted to "and", which is not what you want in this case.  To
+prevent this, use explicit whitespace characters:
+
+```
+<string name="">\u0020and\u0020</string>
+```
+
+Which becomes " and ".
+
+# Demo App
+For an idiomatic source code example check out the [Demo App](../demo-app/).

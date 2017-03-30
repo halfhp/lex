@@ -1,0 +1,13 @@
+<resources>
+    <string name="test">test</string>
+
+    <string name="thing_template">some {SOMETHING}.</string>
+    <string name="this_is_a_template">This is a {SOMETHING}.</string>
+    <string name="and_separator">\u0020and\u0020</string>
+    <string name="comma_separator">,\u0020</string>
+
+    <plurals name="name">
+        <item quantity="one">Name</item>
+        <item quantity="other">Names</item>
+    </plurals>
+</resources>

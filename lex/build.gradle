@@ -1,0 +1,137 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.vanniktech.android.junit.jacoco'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+
+buildscript {
+    dependencies {
+        classpath 'com.vanniktech:gradle-android-junit-jacoco-plugin:0.6.0'
+    }
+
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+}
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+
+//    compileOptions {
+//        sourceCompatibility JavaVersion.VERSION_1_8
+//        targetCompatibility JavaVersion.VERSION_1_8
+//    }
+
+    defaultConfig {
+        minSdkVersion 9
+        targetSdkVersion 25
+        versionCode theVersionCode
+        versionName theVersionName
+
+        testApplicationId "com.halfhp.lex.test"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            testCoverageEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            testCoverageEnabled true
+        }
+    }
+
+    sourceSets {
+        debug {
+            res.srcDirs = ['src/test/res', 'src/main/res']
+            //res.srcDirs = ['src/test/res']
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:25.3.1'
+
+    testCompile 'org.robolectric:robolectric:3.4'
+    testCompile "org.mockito:mockito-core:2.7.20"
+    testCompile 'junit:junit:4.12'
+
+    androidTestCompile 'org.robolectric:robolectric:3.4'
+    androidTestCompile "org.mockito:mockito-core:2.7.20"
+    androidTestCompile 'junit:junit:4.12'
+}
+
+junitJacoco {
+    jacocoVersion = '0.7.9' // type String
+//    ignoreProjects = [] // type String array
+//    excludes // type String List
+//    includeNoLocationClasses = false // type boolean
+}
+
+group = 'com.halfhp.lex'
+version = theVersionName
+def gitUrl = 'https://github.com/halfhp/lex.git'
+
+install {
+    repositories.mavenInstaller {
+        pom {
+            project {
+                packaging 'aar'
+                name 'lex'
+                description = "Configure any object from XML."
+                url gitUrl
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id 'halfhp'
+                        name 'Nick Fellows'
+                        email 'halfhp@gmail.com'
+                    }
+                }
+                scm {
+                    connection gitUrl
+                    developerConnection gitUrl
+                    url gitUrl
+
+                }
+            }
+        }
+    }
+}
+
+bintray {
+
+    // these environment vars must be set when deploying into bintray.
+    // note: BINTRAY_PASSWORD is actually the api key, but naming it 'password'
+    // tells the CI environment into obfuscate the value in public logs.
+    user = System.getenv('BINTRAY_USER')
+    key = System.getenv('BINTRAY_PASSWORD')
+
+
+    configurations = ['archives']
+    pkg {
+        version {
+            name = theVersionName
+        }
+        repo = "lex"
+        name = "com.halfhp.lex:lex"
+        issueTrackerUrl = "https://github.com/halfhp/lex/issues"
+        websiteUrl = gitUrl
+        vcsUrl = gitUrl
+        licenses = ["Apache-2.0"]
+    }
+}
