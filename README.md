@@ -1,31 +1,67 @@
 # Lex
-A better way to i18n.
+A string templating library for Android.  Lex was inspired by the Square's excellent templating
+library [Phrase](https://github.com/square/phrase).  If you're a Phrase user check out our [Phrase Comparison & Migration](docs/phrase.md) guide.
 
-# Usage
+Benefits:
+* Superior readability for developers and translators
+* Flexible configuration to support a wide range of translator / project formats to simplify migration
+and sharing of resources among projects.
+* Safer than traditional formatted Strings and similar template libraries.
+
+#### Examples
+
+##### Into a TextView
+```
+Lex.say("that {ANIMAL} is {MOOD}."
+    .with(LexKey.ANIMAL, "donkey")
+    .with(LexKey.MOOD, "happy").to(someTextView);
+```
+
+##### As a CharSequence:
+```
+CharSequence cs = Lex.say(R.string.that_animal)
+    .with(LexKey.ANIMAL, R.string.donkey).make();
+```
+
+##### As a String:
+``` 
+String str = Lex.say(R.string.that_animal)
+    .with(LexKey.ANIMAL, R.string.donkey).makeString();
+```
+
+### Add Lex as a dependency
 TODO
 
-## Naming Keys
-Because keys must implement the `LexKey` interface, you're limited to using names that are legal
-class names in Java.  The suggested convention is to declare an enum to hold your keys and use
-upper-case names with underscores for spaces:
-
+### Initialize Lex
+Add the following to the top of your app's Application.onCreate method:
 ```
-public enum MyLexKey {
+Lex.init(this);
+```
+
+**IMPORTANT:** Don't initialize Lex outside of Application.onCreate as it can have unexpected consequences.
+
+### Define your keys
+While it's possible to use any class that implements the  `Lex.Key` interface, we suggest using an
+enum type and following the upper-case naming convention with underscores to represent spaces:
+```
+public enum LexKey implements Lex.Key {
     QUANTITY,
     DAYS,
     HOURS,
     MINUTES,
-    MESSAGE
+    MESSAGE,
+    ADDRESS_1
+    FIRST_NAME,
+    LAST_NAME
 }
 ```
 
-Also keep in mind that key names are case sensitive and your strings.xml key usage must exactly match
-your defined key names.
+Remember that whatever naming convention you use, remember that the key names uses in Strings.xml 
+**must exactly match**, including casing.
 
-Works:
-```
-<string name="tries_remaining">Tries remaining: {QUANTITY}</string>
-```
+### Create your template strings
+Key names are case sensitive and your strings.xml key usage must exactly match the enum value names
+defined in Step 3.
 
 Doesn't Work:
 ```
@@ -33,72 +69,12 @@ Doesn't Work:
 <string name="tries_remaining">Tries remaining: {Quantity}</string>
 ```
 
-## Escaping Delimiters
+Works:
+```
+<string name="tries_remaining">Tries remaining: {QUANTITY}</string>
+```
+
+### Usage
+
+#### Custom Delimiters
 TODO (spoiler: not supported)
-
-# Why Lex > Phrase
-Square's excellent Phrase lib is a staple of the i18n Android developer's toolbelt and the inspiration 
-for Lex.  Phrase is easy enough use and still works, but we like to think Lex is an all-around improvement.
-
-## Safer
-Lex makes it harder to have accidents.  In the example below we demonstrate
-attempting to retrieve a converted value without supplying any key/value pairs to inject.
-
-This compiles (but really shouldnt):
-```
-Phrase.from(context, "some {thing}").format();
-```
-
-This wont:
-```
-Lex.say("Foo").make();
-```
-
-You'll also notice Lex doesn't take a Context parameter.  This is because Lex always uses
-the application context when inflating resources, and as a result is totally to use in your app
-anywhere, any time.  Phrase on the other hand can crash your app when invoked from a background thread
-if you aren't careful.
-
-Finally, Phrase has one particularly easy to misuse method.  What do you think this produces:
-
-```
-Phrase.from(context, R.string.my_phrase).put("thing", R.string.donkey).format().toString();
-```
-
-If you think it prints "some donkey" then you're wrong.  For an unknown reason, Phrase includes an
-overloaded put that accepts an int value and prints the int value directly.  In fact there is no way
-to directly pass a string resourceId into a put in Phrase.   Worse yet, misusing this method produces 
-no obvious errors, even at runtime.
-
-Lex does exactly the opposite; you can pass in a string resourceId, but not an int.
-
-If you do try to pass in an arbitrary int, the compiler will unfortunately not throw an error but
-Intellij and Android-lint will.  If for some reason you have all of these safety checks disabled,
-you'll still at least get the fail-fast behavior of the app crashing the moment the invalid text is parsed.
-
-
-## Simpler Usage
-Lex was designed to make the syntax as compact as possible without sacrificing readability.  And because
-of the way Lex is initialized, it's methods require fewer parameters.
-
-Phrase:
-```
-String str = Phrase.from(context, "some {thing}").put("thing", "donkey").format().toString();
-```
-
-Lex:
-```
-String str = Lex.say("some {thing}").with("thing", "donkey").makeString();
-```
-
-## More Flexible
-One cool feature that is unique to Lex is the ability to configure keyword delimiters; by default
-`{` and `}` are used, but if for some reason you need to use something else (to match your translator's
-software configuration for example) you can:
-
-```
-Lex.init(app, "<<", ">>");
-```
-
-# Upgrading from Phrase
-TODO

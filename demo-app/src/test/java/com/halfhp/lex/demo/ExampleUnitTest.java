@@ -1,4 +1,4 @@
-package lex.halfhp.com.lex;
+package com.halfhp.lex.demo;
 
 import org.junit.Test;
 

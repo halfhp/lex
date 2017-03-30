@@ -1,4 +1,4 @@
-package lex.halfhp.com.lex;
+package com.halfhp.lex.demo;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
