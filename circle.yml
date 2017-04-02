@@ -21,8 +21,8 @@ test:
     # lib:
     - cp -r ${HOME}/${CIRCLE_PROJECT_REPONAME}/core/build/outputs/aar/ $CIRCLE_ARTIFACTS
 
-    # javadoc:
-    - cp -r ${HOME}/${CIRCLE_PROJECT_REPONAME}/core/build/docs/javadoc/ $CIRCLE_ARTIFACTS
+#    # javadoc:
+#    - cp -r ${HOME}/${CIRCLE_PROJECT_REPONAME}/core/build/docs/javadoc/ $CIRCLE_ARTIFACTS
 
 
     # junit xml report:
@@ -34,9 +34,9 @@ test:
     - mkdir -p $CIRCLE_TEST_REPORTS/junit-html/
     - cp -r ${HOME}/${CIRCLE_PROJECT_REPONAME}/core/build/reports/tests/release/* $CIRCLE_TEST_REPORTS/junit-html/
 
-    # lint report:
-    - mkdir -p $CIRCLE_TEST_REPORTS/lint/
-    - find . -type f -regex ".*/build/outputs/.*html" -exec cp {} $CIRCLE_TEST_REPORTS/lint/ \;
+#    # lint report:
+#    - mkdir -p $CIRCLE_TEST_REPORTS/lint/
+#    - find . -type f -regex ".*/build/outputs/.*html" -exec cp {} $CIRCLE_TEST_REPORTS/lint/ \;
 
 #deployment:
 #    master:
