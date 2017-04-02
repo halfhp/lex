@@ -41,8 +41,7 @@ Lex.init(this);
 **IMPORTANT:** Don't initialize Lex outside of Application.onCreate as it can have unexpected consequences.
 
 ### Define your keys
-While it's possible to use any class that implements the  `Lex.Key` interface, we suggest using an
-enum type and following the upper-case naming convention with underscores to represent spaces:
+Create an enum that implements Lex.Key:
 ```
 public enum LexKey implements Lex.Key {
     QUANTITY,
@@ -56,12 +55,12 @@ public enum LexKey implements Lex.Key {
 }
 ```
 
-Remember that whatever naming convention you use, remember that the key names uses in Strings.xml 
-**must exactly match**, including casing.
+Remeber that key names are case-sensitive in Lex.  For clarity
+it's strong suggested that you use the upper-case naming convention shown above.
 
 ### Create your template strings
-Key names are case sensitive and your strings.xml key usage must exactly match the enum value names
-defined in Step 3.
+As mentioned above, Lex key names are case sensitive and your strings.xml key usage must exactly match 
+what is declared in your key enum.
 
 Doesn't Work:
 ```
