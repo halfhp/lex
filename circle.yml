@@ -13,7 +13,8 @@ dependencies:
 test:
 
   override:
-        - (./gradlew test assembleRelease javadoc):
+        # - (./gradlew test assembleRelease javadoc):
+        - (./gradlew test assembleRelease):
             timeout: 360
 
   post:
