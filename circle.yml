@@ -30,6 +30,12 @@ test:
     - mkdir -p $CIRCLE_TEST_REPORTS/junit-xml/
     - find . -type f -regex ".*/build/test-results/testReleaseUnitTest/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit-xml/ \;
 
+    # code coverage:
+    - ./gradlew jacocoTestReportDebug
+    - mkdir -p $CIRCLE_TEST_REPORTS/jacoco/
+    - cp -r ${HOME}/${CIRCLE_PROJECT_REPONAME}/core/build/reports/jacoco/debug/. $CIRCLE_TEST_REPORTS/jacoco
+    - bash <(curl -s https://codecov.io/bash)
+
     # junit html report:
     # TODO: recursively copy subdirs etc
     #- mkdir -p $CIRCLE_TEST_REPORTS/junit-html/

@@ -1,8 +1,24 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.vanniktech.android.junit.jacoco'
+
+buildscript {
+    dependencies {
+        classpath 'com.vanniktech:gradle-android-junit-jacoco-plugin:0.6.0'
+    }
+
+    repositories {
+        jcenter()
+    }
+}
 
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 
     defaultConfig {
         minSdkVersion 9
@@ -13,10 +29,16 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
+
     buildTypes {
         release {
             minifyEnabled false
+            testCoverageEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            testCoverageEnabled true
         }
     }
 }
