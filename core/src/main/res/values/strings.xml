@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">core</string>
+    <string name="lex_test_some_thing">some {thing}.</string>
 </resources>

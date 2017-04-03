@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 
 public final class Lex {
 
-    private static Resources resources;
+    protected static Resources resources;
     private static String OPEN_DELIMITER = "{";
     private static String CLOSE_DELIMITER = "}";
     private static Pattern LEX_KEY_PATTERN;

@@ -4,6 +4,8 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.widget.TextView;
 
+import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,17 +13,16 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
+import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.*;
 
 @RunWith(RobolectricTestRunner.class)
+@Config(packageName = "com.halfhp.lex")
 public class LexTest {
 
-    static {
-        Lex.init(RuntimeEnvironment.application);
-    }
-
     enum LexKey implements Lex.Key {
+        THING,
         KEY_ONE,
         KEY_TWO
     }
@@ -29,9 +30,24 @@ public class LexTest {
     @Rule
     public MockitoRule rule = MockitoJUnit.rule();
 
+    @Before
+    public void before() {
+        if(Lex.resources == null) {
+            Lex.init(RuntimeEnvironment.application);
+        }
+    }
+
     @Test(expected = Lex.LexAlreadyInitializedException.class)
     public void init_throwsException_onSecondInvocation() {
         Lex.init(RuntimeEnvironment.application);
+    }
+
+    @Test(expected = Lex.LexNotInitializedException.class)
+    public void make_throwsException_ifNotInitialized() {
+        Lex.resources = null;
+        assertEquals("This is key1 and key2.", Lex.say("This is {KEY_ONE} and {KEY_TWO}.")
+                .with(LexKey.KEY_ONE, "key1")
+                .with(LexKey.KEY_TWO, "key2").makeString());
     }
 
     @Test
@@ -39,6 +55,15 @@ public class LexTest {
         assertEquals("This is key1 and key2.", Lex.say("This is {KEY_ONE} and {KEY_TWO}.")
                 .with(LexKey.KEY_ONE, "key1")
                 .with(LexKey.KEY_TWO, "key2").makeString());
+    }
+
+    // TODO: waiting on fix foe
+    // TODO: https://github.com/robolectric/robolectric/issues/2653
+    @Ignore
+    @Test
+    public void makeString_withResId_inflatesKeys() {
+        assertEquals("some thing.", Lex.say(R.string.lex_test_some_thing)
+                .with(LexKey.THING, "thing").makeString());
     }
 
     @Test public void make_retainsSpans() {
