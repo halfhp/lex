@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.widget.TextView;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -49,6 +50,14 @@ public final class Lex {
     public static @NonNull UnparsedLexString say(@NonNull CharSequence pattern) {
         checkState();
         return new UnparsedLexString(pattern);
+    }
+
+    public static @NonNull LexList list(@NonNull List<CharSequence> items) {
+        return list(items.toArray(new CharSequence[]{}));
+    }
+
+    public static @NonNull LexList list(@NonNull CharSequence... text) {
+        return new LexList(text);
     }
 
     private static void checkState() {
@@ -130,6 +139,86 @@ public final class Lex {
                 context.inflatedText = result;
             }
             return new ParsedLexString(context);
+        }
+    }
+
+    public static class LexList {
+
+        private CharSequence separator;
+        private CharSequence twoItemSeparator;
+        private CharSequence lastItemSeparator;
+        private CharSequence emptyText = "";
+        private final CharSequence[] items;
+
+        private LexList(@NonNull CharSequence[] items) {
+            this.items = items;
+        }
+
+        public LexList separator(@NonNull CharSequence separator) {
+            this.separator = separator;
+            return this;
+        }
+
+        public LexList twoItemSeparator(@NonNull CharSequence twoItemSeparator) {
+            this.twoItemSeparator = twoItemSeparator;
+            return this;
+        }
+
+        public LexList lastItemSeparator(@NonNull CharSequence lastItemSeparator) {
+            this.lastItemSeparator = lastItemSeparator;
+            return this;
+        }
+
+        public LexList emptyText(@NonNull CharSequence noItemText) {
+            this.emptyText = noItemText;
+            return this;
+        }
+
+        @NonNull
+        public CharSequence make() {
+            switch(items.length) {
+                case 0:
+                    return emptyText;
+                case 1:
+                    return items[0];
+                case 2:
+                    return makeTwoItems();
+                default:
+                    return makeThreeOrMoreItems();
+            }
+        }
+
+        private CharSequence makeTwoItems() {
+            CharSequence s;
+            if(twoItemSeparator != null) {
+                s = twoItemSeparator;
+            } else if(separator != null) {
+                s = separator;
+            } else {
+                throw new LexNoSeparatorException();
+            }
+
+            StringBuilder sb = new StringBuilder(items[0]);
+            sb.append(s);
+            sb.append(items[1]);
+            return sb.toString();
+        }
+
+        private CharSequence makeThreeOrMoreItems() {
+            if(separator == null) {
+                throw new LexNoSeparatorException();
+            }
+
+            StringBuilder sb = new StringBuilder(items[0]);
+            for(int i = 1; i < items.length; i++) {
+                if(i == items.length - 1 && lastItemSeparator != null) {
+                    sb.append(lastItemSeparator);
+                } else {
+                    sb.append(separator);
+                }
+                sb.append(items[i]);
+            }
+            return sb.toString();
         }
     }
 
@@ -217,6 +306,12 @@ public final class Lex {
         public LexAlreadyInitializedException() {
             super("Lex has already been initialized! (Attempt to invoke " +
                     "Lex.init(...) more than once.");
+        }
+    }
+
+    public static class LexNoSeparatorException extends RuntimeException {
+        public LexNoSeparatorException() {
+            super("A separator must be supplied when formatting a list.");
         }
     }
 }

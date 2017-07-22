@@ -1,36 +1,37 @@
 # Phrase vs Lex: a Comparison & Migration Guide
 Square's excellent Phrase lib is a staple of the i18n Android developer's toolbelt and the inspiration 
-for Lex.  Phrase is easy enough use and still works, but we like to think Lex is an all-around improvement.
+for Lex.  The major difference between the two libraries is that Lex tries to be a little safer and a little
+easier to use at a nominal cost to performance.  More on that below.
 
 ## Safety
-A major goal of Lex is to make it as difficult as possible to write code that does something unexpected.
-In the example below we demonstrate attempting to retrieve a converted value without supplying any 
-key/value pairs to inject.
+Lex makes it as difficult as possible to write code that does something unexpected.
+In the example below we compare attempting to retrieve a converted value without supplying any 
+key/value pairs to inject in Lex and Phrase.
 
-This compiles (but really shouldnt):
+Compiles (but really shouldnt):
 ```
 Phrase.from(context, "Hi {name}.").format();
 ```
 
-This does not compile:
+Does not compile:
 ```
 Lex.say("Hi {NAME}.").make();
 ```
 
-You probably noticed Lex doesn't take a Context parameter.  Lex always uses
+You'll notice Phrase takes a Context param but Lex doesn't.  Lex always uses
 the application context when inflating resources, and as a result is safe to use anywhere, any time.
-Phrase on the other hand accepts Fragment and Activity params which can become null when invoked
+Phrase uses Fragment and Activity params which can become invalid when invoked
 from a background thread.
 
 Phrase also has one very easy to misuse method.  What do you think this produces:
 
 ```
-Phrase.from(context, R.string.my_phrase).put("thing", R.string.donkey).format();
+Phrase.from(context, "some {thing}").put("thing", R.string.donkey).format();
 ```
 
-If you think it prints "some donkey" then you're wrong.  Instead, the int value of the resource is injected as the key value.  
-In fact there is no way to directly pass a string resourceId into a put in Phrase.   Worse yet, misusing 
-this method produces no obvious errors, even at runtime.
+If you think it prints "some donkey" then you're wrong.  Instead, the int value of `R.string.donkey`.
+In fact there is no way to directly pass a string resourceId into a `put` in Phrase.   Worse yet, misusing 
+this method produces no obvious errors and will print the wrong result at runtime.
 
 Lex does exactly the opposite; you can pass in a string resourceId, but not an int:
 
@@ -38,13 +39,13 @@ Lex does exactly the opposite; you can pass in a string resourceId, but not an i
 Lex.say(R.string.my_phrase).with(LexKey.THING, R.string.donkey).make();
 ```
 
-If you do try to pass in an arbitrary int, the compiler will unfortunately not throw an error but
+If you do pass in an arbitrary int, the compiler will unfortunately not throw an error but
 Intellij and Android-lint will.  If you have all of these safety checks disabled, you'll still get 
 the fail-fast behavior of the app crashing when the invalid resourceId is used.
 
 ## Simpler Usage
-Lex was designed to make the syntax as compact as possible without sacrificing readability.  And because
-of the way Lex is initialized, it's methods require fewer parameters.
+Lex tries to make the syntax as compact as possible without sacrificing readability.  And because
+of the way Lex is initialized, it's methods require fewer params.
 
 Phrase:
 ```
@@ -57,6 +58,10 @@ Lex:
 String str = Lex.say("some {THING}")
     .with(LexKey.THING, "donkey").makeString();
 ```
+
+It's not a major difference, but it can add up.  Those that use the MVP patter in their apps will also
+notice the potential to eliminate references to a Context in Presenters that produce localized
+text for their View.
 
 ## More Flexible
 One cool feature that is unique to Lex is the ability to configure keyword delimiters; by default
@@ -76,8 +81,6 @@ Lex.say("some <<THING}=>>")
 ```
 
 ## Performance
-While Phrase is consistently 2-3x faster than Lex, unless you're optimizing at the microsecond
-level it's **extremely** unlikely that either library will create performance issues in your app.
-
-# How
-TODO
+There's no denying it - Lex is slower than Phrase.  While Phrase is consistently 2-3x faster than Lex, 
+unless you're optimizing at the microsecond level it's **extremely** unlikely that either library will 
+create performance issues in your app.

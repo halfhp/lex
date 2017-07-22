@@ -124,4 +124,51 @@ public class LexTest {
                 .with(LexKey.KEY_ONE, "a test")
                 .make();
     }
+
+    @Test
+    public void list_ofTwo_usesLastItemSeparator() {
+        assertEquals("One, Two and Three", Lex.list("One", "Two", "Three")
+                .separator(", ")
+                .lastItemSeparator(" and ").make().toString());
+    }
+
+    @Test
+    public void list_ofThree_usesLastItemSeparator() {
+        assertEquals("One, Two, and Three", Lex.list("One", "Two", "Three")
+                .separator(", ")
+                .lastItemSeparator(", and ").make().toString());
+
+    }
+
+    @Test
+    public void list_ofThree_usesSeparator() {
+        assertEquals("One, Two, Three", Lex.list("One", "Two", "Three")
+                .separator(", ")
+                .make().toString());
+    }
+
+    @Test
+    public void list_ofMoreThanThree_usesLastItemSeparator() {
+        assertEquals("One, Two, Three, and Four", Lex.list("One", "Two", "Three", "Four")
+                .separator(", ")
+                .lastItemSeparator(", and ").make().toString());
+    }
+
+    @Test
+    public void list_usesTwoItemSeparator_IfTwoItems() {
+        assertEquals("One and Two", Lex.list("One", "Two")
+                .separator(", ")
+                .twoItemSeparator(" and ")
+                .lastItemSeparator(", and ").make().toString());
+    }
+
+    @Test
+    public void list_ofNoItems_usesEmptyText() {
+        assertEquals("No items.", Lex.list(new CharSequence[]{})
+                .separator(", ")
+                .twoItemSeparator(" and ")
+                .lastItemSeparator(", and ")
+                .emptyText("No items.")
+                .make().toString());
+    }
 }

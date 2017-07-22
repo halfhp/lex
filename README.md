@@ -12,6 +12,7 @@ and sharing of resources among projects.
 
 ##### Into a TextView
 ```
+// prints "that donkey is happy"
 Lex.say("that {ANIMAL} is {MOOD}."
     .with(LexKey.ANIMAL, "donkey")
     .with(LexKey.MOOD, "happy").to(someTextView);
@@ -19,6 +20,12 @@ Lex.say("that {ANIMAL} is {MOOD}."
 
 ##### As a CharSequence:
 ```
+strings.xml:
+<string name="that_animal">that {ANIMAL}.</string>
+
+...
+
+// prints "that donkey."
 CharSequence cs = Lex.say(R.string.that_animal)
     .with(LexKey.ANIMAL, R.string.donkey).make();
 ```
@@ -27,6 +34,14 @@ CharSequence cs = Lex.say(R.string.that_animal)
 ``` 
 String str = Lex.say(R.string.that_animal)
     .with(LexKey.ANIMAL, R.string.donkey).makeString();
+```
+
+##### List Formatting:
+```
+// prints "One, Two, and Three"
+String str = Lex.list("One", "Two", "Three")
+    .separator(", ")
+    .lastItemSeparator(", and ").make();
 ```
 
 ### Add Lex as a dependency
@@ -73,7 +88,49 @@ Works:
 <string name="tries_remaining">Tries remaining: {QUANTITY}</string>
 ```
 
-### Usage
+### List Formatting
+Lex can combine arbitrary length lists using conditional separators to produce properly formatted strings.  Lex's
+fluent API for lists takes a sequence of zero or more `CharSequence` elements:
 
-#### Custom Delimiters
-TODO (spoiler: not supported)
+```
+LexList list = Lex.list("One" "Two", "Three")
+```
+
+And provides four configuration options that can be combined for desired behavior:
+
+```
+// default separator
+list.separator(",")
+```
+```
+// if set, will always be used when separating a list of exactly two items.
+list.twoItemSeparator(" and ")
+```
+```
+// if set, will always be used when separating the last to items in the list, unless
+// the list is exactly two items long and a twoItemSeparator has also been set.
+list.lastItemSeparator(", and")
+```
+```
+// text to return when formatting an empty list.  default is "".
+list.emptyText("No items.")
+```
+
+For example, if we wanted to format abitrary length lists of items with an Oxford Comma: 
+```
+Lex.list(numbers)
+    .separator(", ")
+    .twoItemSeparator(" and ")
+    .lastItemSeparator(", and ").make().toString()
+```
+If `numbers` is `{"One", "Two", "Three"}` then "One, Two, and Three" is printed.
+If `numbers` is `{"One", "Two"}` then it prints "One and Two".
+
+Or if you don't want the Oxford Comma:
+```
+Lex.list(numbers)
+    .separator(", ")
+    .lastItemSeparator(" and ").make().toString()
+```
+Now, if `numbers` is `{"One", "Two", "Three"}` then "One, Two and Three" is printed.
+If `numbers` is `{"One", "Two"}` then it prints "One and Two".
