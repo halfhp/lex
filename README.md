@@ -48,7 +48,7 @@ Lex.say(R.string.item_count_template)
     .wrappedIn(new ForegroundColorSpan(Color.BLUE))                 // make it BLUE too
     .withPlural(LexKey.ITEM, item.titles.length, R.plurals.book)    // pluralize 'book'
     .wrappedIn(new ForegroundColorSpan(Color.YELLOW))               // make {ITEM} YELLOW
-    .into(bookCount);                                                 // put results straight into a TextView
+    .into(bookCount);                                               // put results straight into a TextView
 ```
 
 # Add Lex
