@@ -45,11 +45,8 @@ jobs:
       # build
       - run: ./gradlew assembleRelease
 
-      # run tests!
-      - run: ./gradlew testDebug
-
-      # run code coverage
-      - run: ./gradlew jacocoTestReportDebug
+      # run tests & code coc!
+      - run: ./gradlew testDebug jacocoTestReportDebug
 
       # trigger codecod.io
       - run: bash <(curl -s https://codecov.io/bash)
