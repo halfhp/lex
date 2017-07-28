@@ -23,7 +23,7 @@ public class LexTestRunner extends RobolectricTestRunner {
 
     @Override
     protected AndroidManifest getAppManifest(Config config) {
-        String appRoot = "lex/src/main/";
+        String appRoot = "src/main/";
         String manifestPath = appRoot + "AndroidManifest.xml";
         String resDir = appRoot + "res";
         String assetsDir = appRoot + "assets";
@@ -34,8 +34,8 @@ public class LexTestRunner extends RobolectricTestRunner {
             @Override
             public List<ResourcePath> getIncludedResourcePaths() {
                 List<ResourcePath> paths = super.getIncludedResourcePaths();
-                paths.add(new ResourcePath(getRClass(), Fs.fileFromPath("lex/src/main/res"), getAssetsDirectory()));
-                paths.add(new ResourcePath(getRClass(), Fs.fileFromPath("lex/src/test/res"), getAssetsDirectory()));
+                paths.add(new ResourcePath(getRClass(), Fs.fileFromPath("src/main/res"), getAssetsDirectory()));
+                paths.add(new ResourcePath(getRClass(), Fs.fileFromPath("src/test/res"), getAssetsDirectory()));
                 return paths;
             }
         };

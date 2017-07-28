@@ -18,18 +18,12 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
 
-//    compileOptions {
-//        sourceCompatibility JavaVersion.VERSION_1_8
-//        targetCompatibility JavaVersion.VERSION_1_8
-//    }
-
     defaultConfig {
         minSdkVersion 9
         targetSdkVersion 25
         versionCode theVersionCode
         versionName theVersionName
 
-        testApplicationId "com.halfhp.lex.test"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
