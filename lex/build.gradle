@@ -64,12 +64,12 @@ dependencies {
     androidTestCompile 'junit:junit:4.12'
 }
 
-junitJacoco {
-    jacocoVersion = '0.7.9' // type String
-//    ignoreProjects = [] // type String array
-//    excludes // type String List
-//    includeNoLocationClasses = false // type boolean
-}
+//junitJacoco {
+//    jacocoVersion = '0.7.9' // type String
+////    ignoreProjects = [] // type String array
+////    excludes // type String List
+////    includeNoLocationClasses = false // type boolean
+//}
 
 group = 'com.halfhp.lex'
 version = theVersionName
