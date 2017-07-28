@@ -52,7 +52,7 @@ jobs:
       - run: bash <(curl -s https://codecov.io/bash)
 
       - store_artifacts:
-          path: core/build/outputs/aar/
+          path: lex/build/outputs/aar/
           destination: aar
 
       - store_artifacts:
@@ -60,15 +60,15 @@ jobs:
           destination: apk
 
       - store_artifacts:
-          path: core/build/reports/jacoco/debug/
+          path: lex/build/reports/jacoco/debug/
           destination: coverage_report
 
       - store_artifacts:
-          path: core/build/reports/tests/
+          path: lex/build/reports/tests/
           destination: test_results
 
       - store_test_results:
-          path: core/build/test-results/
+          path: lex/build/test-results/
 
       - deploy:
           name: "Deploy to Bintray"
