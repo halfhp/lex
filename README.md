@@ -1,6 +1,6 @@
 ![image](docs/logo.png)
 
-[![CircleCI](https://circleci.com/gh/halfhp/lex.svg?style=shield)](https://circleci.com/gh/halfhp/lex) [![codecov](https://codecov.io/gh/halfhp/lex/branch/master/graph/badge.svg)](https://codecov.io/gh/halfhp/lex)[![Codix](https://codix.io/gh/badge/halfhp/lex)](https://codix.io/gh/repo/halfhp/lex)
+[![CircleCI](https://circleci.com/gh/halfhp/lex.svg?style=shield)](https://circleci.com/gh/halfhp/lex) [![codecov](https://codecov.io/gh/halfhp/lex/branch/master/graph/badge.svg)](https://codecov.io/gh/halfhp/lex) [![Codix](https://codix.io/gh/badge/halfhp/lex)](https://codix.io/gh/repo/halfhp/lex)
 
 A string templating library for Android.  Lex was inspired by the Square's excellent templating
 library [Phrase](https://github.com/square/phrase).  If you're a Phrase user check out our [Phrase Comparison & Migration](docs/phrase.md) guide.
