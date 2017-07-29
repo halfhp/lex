@@ -57,7 +57,7 @@ Lex.say(R.string.item_count_template)
 # Gradle Dependency
 ```
 dependencies {
-    compile 'com.halfhp.lex:lex:1.0.0'
+    compile 'com.halfhp.lex:lex:1.0.2'
 }
 ```
 
