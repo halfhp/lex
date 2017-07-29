@@ -162,4 +162,4 @@ prevent this, use explicit whitespace characters:
 Which becomes " and ".
 
 # Demo App
-For an idiomatic source code example check out the [Demo App](../demo-app/).
+For an idiomatic source code example check out the [Demo App](https://github.com/halfhp/lex/tree/master/demo-app).
