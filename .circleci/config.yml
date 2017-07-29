@@ -48,6 +48,9 @@ jobs:
       # run tests & code coc!
       - run: ./gradlew testDebug jacocoTestReportDebug
 
+      # javadoc
+      - run: ./gradlew javadoc
+
       # trigger codecod.io
       - run: bash <(curl -s https://codecov.io/bash)
 
