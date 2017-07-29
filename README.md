@@ -46,15 +46,15 @@ String str = Lex.list("One", "Two", "Three")
 ##### More cool stuff:
 ```
 Lex.say(R.string.item_count_template)
-    .withNumber(LexKey.COUNT, item.titles.length, countFormat)      // formatted number
-    .wrappedIn(new AbsoluteSizeSpan(24, true))                      // make {COUNT} 24dp 
-    .wrappedIn(new ForegroundColorSpan(Color.BLUE))                 // make it BLUE too
-    .withPlural(LexKey.ITEM, item.titles.length, R.plurals.book)    // pluralize 'book'
-    .wrappedIn(new ForegroundColorSpan(Color.YELLOW))               // make {ITEM} YELLOW
-    .into(bookCount);                                               // put results straight into a TextView
+    .withNumber(LexKey.COUNT, item.titles.length, countFormat)    // formatted number
+    .wrappedIn(new AbsoluteSizeSpan(24, true))                    // make {COUNT} 24dp 
+    .wrappedIn(new ForegroundColorSpan(Color.BLUE))               // make it BLUE too
+    .withPlural(LexKey.ITEM, item.titles.length, R.plurals.book)  // pluralize 'book'
+    .wrappedIn(new ForegroundColorSpan(Color.YELLOW))             // make {ITEM} YELLOW
+    .into(bookCount);                                             // put results straight into a TextView
 ```
 
-# Add Lex
+# Gradle Dependency
 ```
 dependencies {
     compile 'com.halfhp.lex:lex:1.0.0'

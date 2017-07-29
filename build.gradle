@@ -1,6 +1,6 @@
 ext {
-    theVersionName = '1.0.1'
-    theVersionCode = 2
+    theVersionName = '1.0.2'
+    theVersionCode = 3
 }
 
 buildscript {

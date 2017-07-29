@@ -12,8 +12,8 @@ android {
         applicationId "com.halfhp.lex.demo"
         minSdkVersion 9
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+        versionCode theVersionCode
+        versionName theVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
