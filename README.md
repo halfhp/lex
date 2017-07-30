@@ -1,4 +1,7 @@
-# Lex [![CircleCI](https://circleci.com/gh/halfhp/lex.svg?style=shield)](https://circleci.com/gh/halfhp/lex) [![codecov](https://codecov.io/gh/halfhp/lex/branch/master/graph/badge.svg)](https://codecov.io/gh/halfhp/lex)
+![image](docs/logo.png)
+
+[![CircleCI](https://circleci.com/gh/halfhp/lex.svg?style=shield)](https://circleci.com/gh/halfhp/lex) [![codecov](https://codecov.io/gh/halfhp/lex/branch/master/graph/badge.svg)](https://codecov.io/gh/halfhp/lex) [![Codix](https://codix.io/gh/badge/halfhp/lex)](https://codix.io/gh/repo/halfhp/lex)
+
 A string templating library for Android.  Lex was inspired by the Square's excellent templating
 library [Phrase](https://github.com/square/phrase).  If you're a Phrase user check out our [Phrase Comparison & Migration](docs/phrase.md) guide.
 
@@ -43,18 +46,18 @@ String str = Lex.list("One", "Two", "Three")
 ##### More cool stuff:
 ```
 Lex.say(R.string.item_count_template)
-    .withNumber(LexKey.COUNT, item.titles.length, countFormat)      // formatted number
-    .wrappedIn(new AbsoluteSizeSpan(24, true))                      // make {COUNT} 24dp 
-    .wrappedIn(new ForegroundColorSpan(Color.BLUE))                 // make it BLUE too
-    .withPlural(LexKey.ITEM, item.titles.length, R.plurals.book)    // pluralize 'book'
-    .wrappedIn(new ForegroundColorSpan(Color.YELLOW))               // make {ITEM} YELLOW
-    .into(bookCount);                                               // put results straight into a TextView
+    .withNumber(LexKey.COUNT, item.titles.length, countFormat)    // formatted number
+    .wrappedIn(new AbsoluteSizeSpan(24, true))                    // make {COUNT} 24dp 
+    .wrappedIn(new ForegroundColorSpan(Color.BLUE))               // make it BLUE too
+    .withPlural(LexKey.ITEM, item.titles.length, R.plurals.book)  // pluralize 'book'
+    .wrappedIn(new ForegroundColorSpan(Color.YELLOW))             // make {ITEM} YELLOW
+    .into(bookCount);                                             // put results straight into a TextView
 ```
 
-# Add Lex
+# Gradle Dependency
 ```
 dependencies {
-    compile 'com.halfhp.lex:lex:1.0.0'
+    compile 'com.halfhp.lex:lex:1.0.2'
 }
 ```
 
