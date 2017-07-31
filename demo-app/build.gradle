@@ -35,7 +35,9 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.squareup.phrase:phrase:1.1.0'
 
-    compile project(":lex")
+    //compile project(":lex")
+    compile 'com.halfhp.lex:lex:1.0.2'
+
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })

@@ -16,7 +16,7 @@ Benefits:
 // prints "that donkey is happy"
 Lex.say("that {ANIMAL} is {MOOD}."
     .with(LexKey.ANIMAL, "donkey")
-    .with(LexKey.MOOD, "happy").to(someTextView);
+    .with(LexKey.MOOD, "happy").into(someTextView);
 ```
 
 ##### As a CharSequence:

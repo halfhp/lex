@@ -1,5 +1,5 @@
 ext {
-    theVersionName = '1.0.2'
+    theVersionName = '1.0.3'
     theVersionCode = 3
 }
 
